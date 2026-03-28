@@ -24,13 +24,14 @@ Over the past years working in AI/ML, I filled notebooks with intuition first, r
 | 08 | [Computer Vision](chapter%2008%3A%20computer%20vision/01.%20image%20fundamentals.md) | image processing, object detection, segmentation, video processing, SLAM, CNNs, vision transformers, diffusion, flow matching, VR/AR | Available |
 | 09 | [Audio & Speech](chapter%2009%3A%20audio%20and%20speech/01.%20digital%20signal%20processing.md) | DSP, ASR, TTS, voice & acoustic activity detection, diarisation, source separation, active noise cancellation, wavenet, conformer | Available |
 | 10 | [Multimodal Learning](chapter%2010%3A%20multimodal%20learning/01.%20multimodal%20representations.md) | fusion strategies, contrastive learning, CLIP, VLMs, image/video tokenisation, cross-modal generation, unified architectures, world models | Available |
-| 11 | Autonomous Systems | perception, robot learning, VLAs, self-driving cars, space robots | Coming |
-| 12 | Computing & OS | discreet maths, computer architecture, operating systems, RAM, concurrency, parallelism, programming languages | Coming |
-| 13 | Data Structures & Algorithms | arrays, trees, graph, search, sorting, hashmaps | Coming |
-| 14 | SIMD & GPU Programming | ARM & NEON, X86 chips, RISC ships, GPUs, TPUs, triton, CUDA, Vulkan | Coming |
-| 15 | Systems Design | systems design fundamentals, cloud computing, large scale infra, ML systems design examples | Coming |
-| 16 | Inference | quantisation, streamingLLMs, continuous batching, edge inference, | Coming |
-| 17 | Intersecting Fields | quantum ML, neuromorphic ML, AI for finace, AI for bio | Coming |
+| 11 | [Autonomous Systems](chapter%2011%3A%20autonomous%20systems/01.%20perception.md) | perception, robot learning, VLAs, self-driving cars, space robots | Available |
+| 12 | Graph Neural Networks | discreet maths, computer architecture, operating systems, RAM, concurrency, parallelism, programming languages | Coming |
+| 13 | Computing & OS | discreet maths, computer architecture, operating systems, RAM, concurrency, parallelism, programming languages | Coming |
+| 14 | Data Structures & Algorithms | arrays, trees, graph, search, sorting, hashmaps | Coming |
+| 15 | SIMD & GPU Programming | ARM & NEON, X86 chips, RISC ships, GPUs, TPUs, triton, CUDA, Vulkan | Coming |
+| 16 | ML Systems Design | systems design fundamentals, cloud computing, large scale infra, ML systems design examples | Coming |
+| 17 | AI Inference | quantisation, streamingLLMs, continuous batching, edge inference, | Coming |
+| 18 | Intersecting Fields | quantum ML, neuromorphic ML, AI for finace, AI for bio | Coming |
 
 ## Citation
 ```bibtex
