@@ -5,11 +5,8 @@ import { readdir, readFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Resolve compendium root: env var > relative to this script (mcp/src/index.ts → ../../)
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = process.env.COMPENDIUM_ROOT || join(__dirname, "..", "..");
-
-// --- Filesystem helpers ---
 
 const CHAPTER_RE = /^chapter (\d{2}): (.+)$/;
 const SECTION_RE = /^(\d{2})\. (.+)\.md$/;
@@ -24,6 +21,14 @@ interface Section {
   number: number;
   name: string;
   path: string;
+}
+
+interface SectionMeta {
+  chapter: number;
+  chapterName: string;
+  section: number;
+  sectionName: string;
+  description: string;
 }
 
 async function getChapters(): Promise<Chapter[]> {
@@ -48,16 +53,6 @@ async function getSections(chapterPath: string): Promise<Section[]> {
     })
     .filter((s): s is Section => s !== null)
     .sort((a, b) => a.number - b.number);
-}
-
-// --- llms.txt parser for recommend tool ---
-
-interface SectionMeta {
-  chapter: number;
-  chapterName: string;
-  section: number;
-  sectionName: string;
-  description: string;
 }
 
 async function parseLlmsTxt(): Promise<SectionMeta[]> {
@@ -99,14 +94,11 @@ const STOP_WORDS = new Set([
   "understand", "learn", "explain", "tell", "help",
 ]);
 
-// --- MCP Server ---
-
 const server = new McpServer({
   name: "compendium",
   version: "1.0.0",
 });
 
-// Tool: list_topics
 server.registerTool(
   "list_topics",
   {
@@ -134,7 +126,6 @@ server.registerTool(
   },
 );
 
-// Tool: read_section
 server.registerTool(
   "read_section",
   {
@@ -163,7 +154,6 @@ server.registerTool(
   },
 );
 
-// Tool: search
 server.registerTool(
   "search",
   {
@@ -207,7 +197,6 @@ server.registerTool(
   },
 );
 
-// Tool: recommend
 server.registerTool(
   "recommend",
   {
@@ -246,7 +235,6 @@ server.registerTool(
       return { content: [{ type: "text", text: `No relevant sections found for "${query}". Try broader terms or use search for exact matches.` }] };
     }
 
-    // Group by chapter and sort by chapter order for reading sequence
     const byChapter = new Map<number, typeof matches>();
     for (const m of matches) {
       if (!byChapter.has(m.chapter)) byChapter.set(m.chapter, []);
@@ -268,7 +256,6 @@ server.registerTool(
   },
 );
 
-// Tool: get_examples
 server.registerTool(
   "get_examples",
   {
@@ -298,18 +285,15 @@ server.registerTool(
           const lang = openMatch[1] || "text";
           if (language && lang !== language) continue;
 
-          // Find closing fence
           let end = i + 1;
           while (end < lines.length && lines[end] !== "```") end++;
 
           const code = lines.slice(i + 1, end).join("\n");
           if (!code.trim()) continue;
 
-          // Get context: up to 3 lines before the code block for explanation
           const ctxStart = Math.max(0, i - 3);
           const context = lines.slice(ctxStart, i).filter((l) => l.trim()).join("\n");
 
-          // Check if query matches the code or surrounding context
           if (lowerQuery) {
             const searchable = `${context} ${code}`.toLowerCase();
             if (!searchable.includes(lowerQuery)) continue;
@@ -322,7 +306,7 @@ server.registerTool(
           );
 
           if (results.length >= 10) break;
-          i = end; // Skip past this block
+          i = end;
         }
         if (results.length >= 10) break;
       }
@@ -337,8 +321,6 @@ server.registerTool(
     return { content: [{ type: "text", text: `Found ${results.length} code examples:\n\n${results.join("\n\n---\n\n")}` }] };
   },
 );
-
-// --- Start ---
 
 async function main() {
   const transport = new StdioServerTransport();
